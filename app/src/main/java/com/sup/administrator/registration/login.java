@@ -1,5 +1,6 @@
 package com.sup.administrator.registration;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
@@ -12,13 +13,55 @@ import android.widget.Toast;
 
 public class login extends AppCompatActivity {
        TextView t;
-    Button b,b1;
+    Button b,b1,b2;
+    String s;
+    AlertDialog.Builder build;
+    dbhelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        b2=(Button) findViewById(R.id.reac);
+        db=new dbhelper(this);
+        db.getWritableDatabase();
+        SharedPreferences pref=getSharedPreferences("login",MODE_PRIVATE);
+         final String dbid=pref.getString("id",null);
 
+        build=new AlertDialog.Builder(this);
+        build.setTitle("Confirm");
+        build.setMessage("are you sure you want to delete?");
+        build.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                boolean status=db.delete(dbid);
+                if(status==true)
+                {
+                    Toast.makeText(getApplicationContext(),"deleted",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_LONG).show();
+                }
+                dialogInterface.dismiss();
+            }
+        });
+        build.setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(getApplicationContext(),"no clicked",Toast.LENGTH_LONG).show();
+                dialogInterface.dismiss();
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        AlertDialog alert=build.create();
+        alert.show();
+    }
+});
 
         b1=(Button)findViewById(R.id.pedit);
         b1.setOnClickListener(new View.OnClickListener() {

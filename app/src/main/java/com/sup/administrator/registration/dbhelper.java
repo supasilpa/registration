@@ -66,5 +66,40 @@ public class dbhelper extends SQLiteOpenHelper {
         Cursor cur=sq.rawQuery("SELECT * FROM "+tablename+ " WHERE "+col1+ "="+id,null);
         return cur;
     }
+    public boolean updatedata(String id,String name,String email,String mobile,String user,String pass){
+        SQLiteDatabase sq=this.getWritableDatabase();
+        ContentValues cv=new ContentValues();
+      cv.put(col2,name);
+        cv.put(col3,email);
+        cv.put(col4,mobile);
+        cv.put(col5,user);
+        cv.put(col6,pass);
+
+
+        long status=sq.update(tablename,cv,col1 + "=" +id,null);
+        if(status==-1)
+        {
+            return false;
+
+        }
+        else
+        {
+            return true;
+        }
+
+
+
+    }
+    public boolean delete(String id){
+        SQLiteDatabase sq=this.getWritableDatabase();
+        long status=sq.delete(tablename,col1+"="+id,null);
+        if(status==-1){
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }

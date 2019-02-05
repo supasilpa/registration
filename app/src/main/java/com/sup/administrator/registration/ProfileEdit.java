@@ -13,6 +13,7 @@ public class ProfileEdit extends AppCompatActivity {
     EditText e1,e2,e3,e4,e5;
     Button b;
     dbhelper db;
+    String getname,getemail,getmob,getuser,getpass,s1,s2,s3,s4,s5,getid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,8 @@ public class ProfileEdit extends AppCompatActivity {
         e5=(EditText)findViewById(R.id.pass2);
         b=(Button) findViewById(R.id.edit);
         SharedPreferences sh=getSharedPreferences("login",MODE_PRIVATE);
-        String dbid=sh.getString("id",null);
+        final String dbid=sh.getString("id",null);
+
 
        Cursor cur=db.searchid(dbid) ;
         if(cur.getCount()==0)
@@ -38,11 +40,13 @@ public class ProfileEdit extends AppCompatActivity {
         else {
             while(cur.moveToNext())
             {
-                String getname=cur.getString(1);
-                String getemail=cur.getString(2);
-                String getmob=cur.getString(3);
-                String getuser=cur.getString(4);
-                String getpass=cur.getString(5);
+                getid=cur.getString(0);
+
+                getname=cur.getString(1);
+                 getemail=cur.getString(2);
+              getmob=cur.getString(3);
+              getuser=cur.getString(4);
+               getpass=cur.getString(5);
                 e1.setText(getname);
                 e2.setText(getemail);
                 e3.setText(getmob);
@@ -59,6 +63,26 @@ public class ProfileEdit extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            s1=e1.getText().toString();
+                s2=e2.getText().toString();
+                s3=e3.getText().toString();
+                s4=e4.getText().toString();
+                s5=e5.getText().toString();
+                boolean result=db.updatedata(dbid,s1,s2,s3,s4,s5);
+                if(result==true)
+                {
+                    Toast.makeText(getApplicationContext(),"updated",Toast.LENGTH_LONG).show();
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_LONG).show();
+                }
+
+
+
+
+
 
             }
         });
